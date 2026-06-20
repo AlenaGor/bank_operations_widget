@@ -15,6 +15,11 @@ def filter_by_state(transactions: List[Dict[str, str]], state: str = 'EXECUTED')
 
     Возвращает:
         Новый список транзакций с указанным статусом.
+
+    Пример:
+        >>> data = [{'state': 'EXECUTED'}, {'state': 'CANCELED'}]
+        >>> filter_by_state(data)
+        [{'state': 'EXECUTED'}]
     """
     return [item for item in transactions if item.get('state') == state]
 
@@ -29,5 +34,10 @@ def sort_by_date(transactions: List[Dict[str, str]], descending: bool = True) ->
 
     Возвращает:
         Новый список, отсортированный по дате.
+
+    Пример:
+        >>> data = [{'date': '2023-01-02'}, {'date': '2023-01-01'}]
+        >>> sort_by_date(data)
+        [{'date': '2023-01-02'}, {'date': '2023-01-01'}]
     """
     return sorted(transactions, key=lambda x: x.get('date', ''), reverse=descending)
