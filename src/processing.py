@@ -27,15 +27,15 @@ def filter_by_state(
 
 def sort_by_date(
     transactions: List[Dict[str, str]],
-    descending: bool = True
+    is_descending: bool = True
 ) -> List[Dict[str, str]]:
     """
     Сортирует транзакции по дате.
 
     Аргументы:
         transactions: Список словарей с данными транзакций.
-        descending: True - по убыванию (сначала новые),
-                    False - по возрастанию.
+        is_descending: True - по убыванию (сначала новые),
+                       False - по возрастанию.
 
     Возвращает:
         Новый список, отсортированный по дате.
@@ -43,5 +43,5 @@ def sort_by_date(
     return sorted(
         transactions,
         key=lambda x: x.get('date', ''),
-        reverse=descending
+        reverse=is_descending
     )
