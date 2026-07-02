@@ -19,15 +19,15 @@ def filter_by_state(transactions: List[Dict[str, str]], state: str = 'EXECUTED')
     return [item for item in transactions if item.get('state') == state]
 
 
-def sort_by_date(transactions: List[Dict[str, str]], descending: bool = True) -> List[Dict[str, str]]:
+def sort_by_date(operations: list[dict[str, Any]], is_descending: bool = True) -> list[dict[str, Any]]:
     """
-    Сортирует транзакции по дате.
+    Сортирует список операций по дате.
 
-    Аргументы:
-        transactions: Список словарей с данными транзакций.
-        descending: True - по убыванию (сначала новые), False - по возрастанию.
+    Args:
+        operations: Список словарей с данными об операциях
+        is_descending: Порядок сортировки (True - убывание, False - возрастание)
 
-    Возвращает:
-        Новый список, отсортированный по дате.
+    Returns:
+        Новый отсортированный список операций
     """
-    return sorted(transactions, key=lambda x: x.get('date', ''), reverse=descending)
+    return sorted(operations, key=lambda x: x.get('date', ''), reverse=is_descending)
