@@ -20,3 +20,6 @@ env/
 .pytest_cache/
 .coverage
 htmlcov/
+htmlcov/
+.coverage
+.pytest_cache/
