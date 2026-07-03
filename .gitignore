@@ -19,4 +19,3 @@ env/
 # Testing
 .pytest_cache/
 .coverage
-htmlcov/
