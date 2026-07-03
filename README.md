@@ -51,3 +51,33 @@ for card in card_number_generator(1, 5):
 # 0000 0000 0000 0001
 # 0000 0000 0000 0002
 ```
+## Модуль decorators
+
+Модуль содержит декораторы для логирования работы функций.
+
+### `@log(filename=None)`
+
+Декоратор для логирования выполнения функций.
+
+**Параметры:**
+- `filename` (опционально): имя файла для записи логов. Если не указан — логи выводятся в консоль.
+
+**Пример использования:**
+
+```python
+from src.decorators import log
+
+@log(filename="mylog.txt")
+def my_function(x, y):
+    return x + y
+
+my_function(1, 2)
+# В файл mylog.txt будет записано: my_function ok
+
+@log()
+def my_function_with_error(x, y):
+    return x / y
+
+my_function_with_error(1, 0)
+# В консоль будет выведено: my_function_with_error error: ZeroDivisionError. Inputs: (1, 0)
+```
