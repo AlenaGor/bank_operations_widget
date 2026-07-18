@@ -287,3 +287,55 @@ git add README.md
 git commit -m "docs: update README with complete project documentation"
 git push origin feature/homework_10_6
 ```
+## 📊 Работа с различными форматами данных
+
+Проект поддерживает чтение финансовых операций из различных форматов:
+
+### Поддерживаемые форматы:
+- **JSON** - через модуль `src.utils`
+- **CSV** - через модуль `src.file_operations`
+- **Excel (XLSX)** - через модуль `src.file_operations`
+
+### Модуль file_operations
+
+Модуль `src/file_operations.py` предоставляет функции для чтения финансовых операций из CSV и Excel файлов.
+
+#### Функции:
+
+**`read_csv_transactions(file_path: str) -> List[Dict[str, Any]]`**
+- Читает финансовые операции из CSV-файла
+- Принимает путь к файлу
+- Возвращает список словарей с транзакциями
+- В случае ошибки выбрасывает исключения `FileNotFoundError` или `ValueError`
+
+**`read_excel_transactions(file_path: str) -> List[Dict[str, Any]]`**
+- Читает финансовые операции из Excel-файла (XLSX)
+- Принимает путь к файлу
+- Возвращает список словарей с транзакциями
+- В случае ошибки выбрасывает исключения `FileNotFoundError` или `ValueError`
+
+#### Пример использования:
+
+```python
+from src.file_operations import read_csv_transactions, read_excel_transactions
+
+# Чтение из CSV
+csv_transactions = read_csv_transactions('data/transactions.csv')
+print(f"Загружено {len(csv_transactions)} транзакций из CSV")
+
+# Чтение из Excel
+excel_transactions = read_excel_transactions('data/transactions_excel.xlsx')
+print(f"Загружено {len(excel_transactions)} транзакций из Excel")
+## 🧪 Тестирование
+
+### Запуск тестов:
+
+```bash
+# Запустить все тесты
+pytest tests/
+
+# Запустить тесты с подробным выводом
+pytest tests/ -v
+
+# Запустить тесты для file_operations
+pytest tests/test_file_operations.py -v
