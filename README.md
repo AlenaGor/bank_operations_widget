@@ -22,7 +22,7 @@ source .venv/bin/activate  # для Linux/Mac
 
 3. Установите зависимости:
 ```bash
-pip install requests python-dotenv pytest pytest-cov
+pip install -r requirements.txt
 ```
 
 ---
@@ -42,7 +42,7 @@ EXCHANGE_RATES_API_KEY=ваш_ключ_от_apilayer
 
 Получить API ключ можно на сайте [apilayer.com](https://apilayer.com/exchangerates_data-api).
 
-
+---
 
 ## Модули и функции
 
@@ -192,6 +192,30 @@ transactions = get_transactions_from_json("data/operations.json")
 
 ---
 
+### Модуль `file_operations.py` (НОВЫЙ)
+
+Поддерживает чтение финансовых операций из CSV и Excel файлов.
+
+#### `read_csv_transactions(file_path)`
+Читает финансовые операции из CSV-файла.
+
+```python
+from src.file_operations import read_csv_transactions
+
+transactions = read_csv_transactions("data/transactions.csv")
+```
+
+#### `read_excel_transactions(file_path)`
+Читает финансовые операции из Excel-файла (XLSX).
+
+```python
+from src.file_operations import read_excel_transactions
+
+transactions = read_excel_transactions("data/transactions_excel.xlsx")
+```
+
+---
+
 ### Модуль `external_api.py`
 
 #### `convert_currency(transaction)`
@@ -225,6 +249,7 @@ result = convert_currency(transaction)  # сумма в рублях
 | `utils` | `logs/utils.log` |
 | `masks` | `logs/masks.log` |
 | `processing` | `logs/processing.log` |
+| `file_operations` | `logs/file_operations.log` |
 
 ### Формат логов
 
@@ -241,93 +266,6 @@ result = convert_currency(transaction)  # сумма в рублях
 
 ## Тестирование
 
-Запуск всех тестов:
-
-```bash
-pytest -v
-```
-
-Запуск с отчётом о покрытии:
-
-```bash
-pytest --cov=src --cov-report=html
-```
-
-Отчёт в папке `htmlcov/`.
-
----
-
-## Требования
-
-- Python 3.12+
-- requests
-- python-dotenv
-- pytest
-- pytest-cov
-
----
-
-## Лицензия
-
-MIT
-```
-
----
-
-## ✅ **Что делать:**
-
-1. **Открой файл `README.md`** в PyCharm
-2. **Выдели ВСЁ** и **нажми Delete** (удали старый текст)
-3. **Вставь новый текст** (`Ctrl+V`)
-4. **Сохрани** (`Ctrl+S`)
-5. **Закоммить:**
-
-```bash
-git add README.md
-git commit -m "docs: update README with complete project documentation"
-git push origin feature/homework_10_6
-```
-## 📊 Работа с различными форматами данных
-
-Проект поддерживает чтение финансовых операций из различных форматов:
-
-### Поддерживаемые форматы:
-- **JSON** - через модуль `src.utils`
-- **CSV** - через модуль `src.file_operations`
-- **Excel (XLSX)** - через модуль `src.file_operations`
-
-### Модуль file_operations
-
-Модуль `src/file_operations.py` предоставляет функции для чтения финансовых операций из CSV и Excel файлов.
-
-#### Функции:
-
-**`read_csv_transactions(file_path: str) -> List[Dict[str, Any]]`**
-- Читает финансовые операции из CSV-файла
-- Принимает путь к файлу
-- Возвращает список словарей с транзакциями
-- В случае ошибки выбрасывает исключения `FileNotFoundError` или `ValueError`
-
-**`read_excel_transactions(file_path: str) -> List[Dict[str, Any]]`**
-- Читает финансовые операции из Excel-файла (XLSX)
-- Принимает путь к файлу
-- Возвращает список словарей с транзакциями
-- В случае ошибки выбрасывает исключения `FileNotFoundError` или `ValueError`
-
-#### Пример использования:
-
-```python
-from src.file_operations import read_csv_transactions, read_excel_transactions
-
-# Чтение из CSV
-csv_transactions = read_csv_transactions('data/transactions.csv')
-print(f"Загружено {len(csv_transactions)} транзакций из CSV")
-
-# Чтение из Excel
-excel_transactions = read_excel_transactions('data/transactions_excel.xlsx')
-print(f"Загружено {len(excel_transactions)} транзакций из Excel")
-## 🧪 Тестирование
-
 ### Запуск тестов:
 
 ```bash
@@ -339,3 +277,50 @@ pytest tests/ -v
 
 # Запустить тесты для file_operations
 pytest tests/test_file_operations.py -v
+```
+
+### Проверка покрытия:
+
+```bash
+# Проверить покрытие всех модулей
+pytest --cov=src --cov-report=term
+
+# Проверить покрытие конкретного модуля
+pytest --cov=src.file_operations tests/test_file_operations.py
+
+# Создать HTML отчет
+pytest --cov=src --cov-report=html
+```
+
+### Проверка стиля кода:
+
+```bash
+# Проверить весь проект
+flake8 src/ tests/
+
+# Проверить только новые модули
+flake8 src/file_operations.py tests/test_file_operations.py
+```
+
+### Статус тестирования:
+- ✅ Все тесты проходят (9/9 для file_operations)
+- ✅ Покрытие file_operations - 88%
+- ✅ Flake8 для нового кода - 0 ошибок
+
+---
+
+## Требования
+
+- Python 3.12+
+- requests
+- python-dotenv
+- pytest
+- pytest-cov
+- pandas
+- openpyxl
+
+---
+
+## Лицензия
+
+MIT
