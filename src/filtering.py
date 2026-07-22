@@ -37,3 +37,4 @@ def filter_by_description(transactions: List[Dict[str, Any]], search_string: str
             t for t in transactions
             if search_lower in str(t.get('description', '')).lower()
         ]
+    

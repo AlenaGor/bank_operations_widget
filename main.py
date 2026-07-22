@@ -1,100 +1,3 @@
-"""
-Главный модуль программы для работы с банковскими операциями.
-"""
-
-import sys
-from pathlib import Path
-
-# Добавляем путь к проекту
-sys.path.insert(0, str(Path(__file__).parent))
-
-from src.utils import get_transactions_from_json
-from src.file_operations import read_csv_transactions, read_excel_transactions
-from src.processing import filter_by_state, sort_by_date
-from src.filtering import filter_by_description
-from src.category_counter import count_categories
-from src.masks import mask_account_card
-from src.widget import get_date
-
-
-def get_user_choice(prompt: str, options: list) -> str:
-    """
-    Получает выбор пользователя из списка вариантов.
-
-    Args:
-        prompt: Текст приглашения
-        options: Список допустимых вариантов
-
-    Returns:
-        str: Выбранный пользователем вариант
-    """
-    while True:
-        choice = input(prompt).strip().lower()
-        if choice in [opt.lower() for opt in options]:
-            return choice
-        print(f"Неверный ввод. Доступные варианты: {', '.join(options)}")
-
-
-def get_user_status(valid_statuses: list) -> str:
-    """
-    Получает от пользователя статус для фильтрации.
-
-    Args:
-        valid_statuses: Список допустимых статусов
-
-    Returns:
-        str: Выбранный статус в верхнем регистре
-    """
-    valid_statuses_lower = [s.lower() for s in valid_statuses]
-
-    while True:
-        status = input(
-            "\nВведите статус, по которому необходимо выполнить фильтрацию.\n"
-            f"Доступные для фильтровки статусы: {', '.join(valid_statuses)}\n"
-        ).strip()
-
-        if status.lower() in valid_statuses_lower:
-            return status.upper()
-
-        print(f'Статус операции "{status}" недоступен.\n')
-
-
-def format_transaction(transaction: dict) -> str:
-    """
-    Форматирует одну транзакцию для вывода.
-
-    Args:
-        transaction: Словарь с данными транзакции
-
-    Returns:
-        str: Отформатированная строка транзакции
-    """
-    date = get_date(transaction.get('date', ''))
-    description = transaction.get('description', 'Нет описания')
-
-    amount = transaction.get('operationAmount', {})
-    amount_value = amount.get('amount', '0')
-    currency = amount.get('currency', {}).get('name', 'руб.')
-
-    from_field = transaction.get('from', '')
-    to_field = transaction.get('to', '')
-
-    from_masked = mask_account_card(from_field) if from_field else ''
-    to_masked = mask_account_card(to_field) if to_field else ''
-
-    result = f"\n{date} {description}"
-    if from_masked and to_masked:
-        result += f"\n{from_masked} -> {to_masked}"
-    elif to_masked:
-        result += f"\n{to_masked}"
-    elif from_masked:
-        result += f"\n{from_masked}"
-
-    result += f"\nСумма: {amount_value} {currency}"
-
-    return result
-
-
 def main():
     """Главная функция программы."""
     print("\nПривет! Добро пожаловать в программу работы с банковскими транзакциями.")
@@ -175,11 +78,14 @@ def main():
         print("\nНе найдено ни одной транзакции, подходящей под ваши условия фильтрации")
         return
 
+    # Подсчет статистики по категориям
+    categories = ['Перевод', 'Оплата', 'Пополнение']
+    category_counts = count_categories(filtered_transactions, categories)
+    print(f"\n📊 Статистика по категориям:")
+    for category, count in category_counts.items():
+        print(f"   {category}: {count}")
+
     print(f"\nВсего банковских операций в выборке: {len(filtered_transactions)}")
 
     for transaction in filtered_transactions:
         print(format_transaction(transaction))
-
-
-if __name__ == "__main__":
-    main()
