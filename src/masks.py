@@ -61,3 +61,32 @@ def get_mask_account(account_number: str) -> str:
     result = f"**{account_number[-4:]}"
     logger.debug(f"Успешно замаскирован номер счета: {result}")
     return result
+
+
+def mask_account_card(card_or_account: str) -> str:
+    """
+    Маскирует номер карты или счета в строке.
+
+    Args:
+        card_or_account: Строка с типом и номером карты/счета
+
+    Returns:
+        str: Строка с замаскированным номером
+    """
+    if not card_or_account:
+        return card_or_account
+
+    if 'Счет' in card_or_account:
+        parts = card_or_account.split()
+        if len(parts) >= 2:
+            account_num = parts[-1]
+            masked = get_mask_account(account_num)
+            return f"{' '.join(parts[:-1])} {masked}"
+    else:
+        parts = card_or_account.split()
+        if len(parts) >= 2:
+            card_num = parts[-1]
+            masked = get_mask_card_number(card_num)
+            return f"{' '.join(parts[:-1])} {masked}"
+
+    return card_or_account
