@@ -1,14 +1,19 @@
 """
-Модуль для фильтрации транзакций по описанию с использованием регулярных выражений.
+Модуль для фильтрации транзакций по описанию
+с использованием регулярных выражений.
 """
 
 import re
 from typing import List, Dict, Any
 
 
-def filter_by_description(transactions: List[Dict[str, Any]], search_string: str) -> List[Dict[str, Any]]:
+def filter_by_description(
+    transactions: List[Dict[str, Any]],
+    search_string: str
+) -> List[Dict[str, Any]]:
     """
-    Фильтрует транзакции по наличию строки в описании с использованием регулярных выражений.
+    Фильтрует транзакции по наличию строки в описании
+с использованием регулярных выражений.
 
     Args:
         transactions: Список словарей с транзакциями
@@ -37,4 +42,3 @@ def filter_by_description(transactions: List[Dict[str, Any]], search_string: str
             t for t in transactions
             if search_lower in str(t.get('description', '')).lower()
         ]
-    

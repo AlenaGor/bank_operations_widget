@@ -29,6 +29,9 @@ def count_categories(transactions: List[Dict[str, Any]], categories: List[str]) 
                 category_counter[category] += 1
                 break
 
-    result = {category: category_counter.get(category, 0) for category in categories}
+    result = {
+        category: category_counter.get(category, 0)
+        for category in categories
+    }
 
     return result
